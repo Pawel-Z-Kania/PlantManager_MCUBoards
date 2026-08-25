@@ -1,0 +1,413 @@
+{
+  "folders": [
+    {
+      "name": "PlantManager_CentralControlBoard",
+      "path": "."
+    },
+    {
+      "name": "PlantManager_DetectorBoard",
+      "path": "../PlantManager_DetectorBoard"
+    }
+  ],
+  "settings": {
+    "platformio-ide.reuseTerminal": false,
+    "task.allowAutomaticTasks": "on",
+    "files.exclude": {
+      "**/.pio": true,
+      "**/.vscode": true,
+      "**/.gitignore": true
+    }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Central - monitor (COM6)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "device",
+          "monitor",
+          "-p",
+          "COM6",
+          "-b",
+          "115200"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_CentralControlBoard}"
+        },
+        "isBackground": true,
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "Detector - monitor (COM5)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "device",
+          "monitor",
+          "-p",
+          "COM5",
+          "-b",
+          "9600"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "isBackground": true,
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "Detector - monitor [UNO] (COM3)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "device",
+          "monitor",
+          "-p",
+          "COM3",
+          "-b",
+          "9600"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "isBackground": true,
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "Monitor ALL",
+        "dependsOrder": "parallel",
+        "dependsOn": [
+          "Central - monitor (COM6)",
+          "Detector - monitor (COM5)",
+          "Detector - monitor [UNO] (COM3)"
+        ],
+        "runOptions": {
+          "runOn": "folderOpen"
+        }
+      },
+      {
+        "label": "Central - upload (test0_selftest)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test0_selftest",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_CentralControlBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Central - upload (test1_serial)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test1_serial",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_CentralControlBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Central - upload (test2_wifi)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test2_wifi",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_CentralControlBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Central - upload (test3_nrf_chip)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test3_nrf_chip",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_CentralControlBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Central - upload (test4_nrf_link)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test4_nrf_link",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_CentralControlBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Central - upload (test5_full_system)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test5_full_system",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_CentralControlBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Central - upload (production)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "production",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_CentralControlBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload (test0_selftest)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test0_selftest",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload (test1_serial)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test1_serial",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload (test2_sensor)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test2_sensor",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload (test3_nrf_chip)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test3_nrf_chip",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload (test4_nrf_link)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test4_nrf_link",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload [UNO] (test4_nrf_link_uno)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test4_nrf_link_uno",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload (test5_full_system)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test5_full_system",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload [UNO] (test5_full_system_uno)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "test5_full_system_uno",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload (production)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "production",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload [UNO] (production_uno)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "production_uno",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload (production_due)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "production_due",
+          "-t",
+          "upload"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": []
+      }
+    ]
+  }
+}
