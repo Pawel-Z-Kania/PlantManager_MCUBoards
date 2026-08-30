@@ -97,10 +97,7 @@
           "Central - monitor (COM6)",
           "Detector - monitor (COM5)",
           "Detector - monitor [UNO] (COM3)"
-        ],
-        "runOptions": {
-          "runOn": "folderOpen"
-        }
+        ]
       },
       {
         "label": "Central - upload (test0_selftest)",

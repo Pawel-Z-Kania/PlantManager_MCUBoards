@@ -2,7 +2,8 @@
 #include <Arduino.h>
 #include "bsp_pins.h"
 #include "hal_radio.h"
-#include "app_mqtt.h"
+#include "app_wifi.h"
+#include "app_http.h"
 
 void setup()
 {
@@ -10,7 +11,8 @@ void setup()
     pinMode(LED_PIN, OUTPUT);
 
     hal_radio_init();
-    app_mqtt_init();
+    app_wifi_init();
+    app_http_init();
 
     digitalWrite(LED_PIN, LOW);
     Serial.println("System Monitoringu (ESP8266) Gotowy!");
@@ -20,14 +22,10 @@ void loop()
 {
     PlantData receivedData;
 
-    app_mqtt_loop();
+    app_wifi_loop();
 
     if (hal_radio_read(receivedData))
     {
-        String jsonPayload = "{\"id\":" + String(receivedData.id) +
-                             ",\"val\":" + String(receivedData.moisture) + "}";
-
-        // Wysyłamy każdą odebraną paczkę do HiveMQ
-        app_mqtt_publish_json(receivedData.id, jsonPayload);
+        app_http_publish(receivedData);
     }
-}
+}   
