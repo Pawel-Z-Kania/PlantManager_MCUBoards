@@ -13,12 +13,12 @@ void app_http_init()
     Serial.println("[HTTP] Zainicjowano.");
 }
 
-void app_http_publish(const PlantData &data)
+bool app_http_publish(const PlantData &data)
 {
     if (WiFi.status() != WL_CONNECTED)
     {
         Serial.println("[HTTP] Brak WiFi, zrzucam pakiet.");
-        return;
+        return false;
     }
 
     HTTPClient http;
@@ -27,15 +27,19 @@ void app_http_publish(const PlantData &data)
     http.addHeader("Content-Type", "application/json");
     http.addHeader("x-api-key", HTTP_AUTH_TOKEN );
 
-    String body = "{\"board_id\":" + String(data.id) + ",\"value\":" + String(data.moisture) + "}";
+    String body = "{\"board_id\":" + String(data.id) + ",\"value\":" + String(data.moisture) + ",\"battery_mv\":" + String(data.batteryMv) + "}";
     int code = http.POST(body);
 
+    bool success = false;
     if (code > 0)
     {
         Serial.print("[HTTP] Kod odpowiedzi: ");
         Serial.println(code);
-        if (code != 200)
+        if (code == 200) {
+            success = true;
+        } else {
             Serial.println("[HTTP] Tresc odpowiedzi: " + http.getString());
+        }
     }
     else
     {
@@ -43,4 +47,5 @@ void app_http_publish(const PlantData &data)
     }
 
     http.end();
+    return success;
 }

@@ -31,12 +31,26 @@ void app_wifi_init()
 void app_wifi_loop()
 {
     static unsigned long lastAttempt = 0;
-    if (WiFi.status() == WL_CONNECTED) return;
+    static uint8_t reconnectFails = 0;
+
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        reconnectFails = 0;
+        return;
+    }
+
     unsigned long now = millis();
     if (now - lastAttempt >= WIFI_RECONNECT_DELAY_MS)
     {
         lastAttempt = now;
         Serial.println("[WiFi] Utracono polaczenie, ponawiam...");
         WiFi.reconnect();
+        
+        reconnectFails++;
+        if (reconnectFails > 15)
+        {
+            Serial.println("[WiFi] Zbyt wiele nieudanych prob polaczenia, restartowanie urzadzenia...");
+            ESP.restart();
+        }
     }
 }

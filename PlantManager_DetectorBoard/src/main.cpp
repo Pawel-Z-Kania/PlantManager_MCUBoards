@@ -3,6 +3,8 @@
 #include "config.h"
 #include "bsp_pins.h"
 #include "board_id.h"
+#include "low_power.h"
+#include "battery.h"
 
 // SETUP I KONFIGURACJA ==================================================================================
 plantData dataObject;
@@ -29,7 +31,8 @@ void loop()
   digitalWrite(PIN_MOISTURE_POWER, LOW);
 
   // Wyślij dane
+  dataObject.batteryMv = readVccMv();
   app_mqtt_publish_json(dataObject);
 
-  delay(SENSOR_TX_INTERVAL_MS);
+  lowPowerSleepMs(SENSOR_TX_INTERVAL_MS);
 }

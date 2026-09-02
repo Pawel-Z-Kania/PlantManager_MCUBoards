@@ -41,8 +41,15 @@ void setupRadio()
 
 void app_mqtt_publish_json(const plantData& dataObject)
 {
+    // Wybudź radio ze stanu power-down (patrz powerDown() poniżej) przed nadawaniem
+    radio.powerUp();
+    delay(5);
+
     // Wysyłamy strukturę binarnie (mieści się w 32 bajtach)
     bool sukces = radio.write(&dataObject, sizeof(dataObject));
+
+    // Zejdź do najniższego poboru prądu do następnej transmisji
+    radio.powerDown();
 
     if (!sukces)
     {
