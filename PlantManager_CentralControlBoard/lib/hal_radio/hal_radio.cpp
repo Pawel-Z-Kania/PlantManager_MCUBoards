@@ -32,6 +32,7 @@ void hal_radio_init() {
 
     // Przełączenie w tryb odbiornika
     radio.startListening();
+    radio.flush_rx(); // czysty start/reinicjalizacja bez zalegajacych pakietow w FIFO
 }
 
 bool hal_radio_read(PlantData &data) {

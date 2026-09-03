@@ -12,9 +12,15 @@ plantData dataObject;
 void setup()
 {
   setupHardware();
+  logResetReason();
   setupRadio();
 
   dataObject.id = getBoardId();
+
+#if DEBUG_LOG
+  Serial.print(F("[Boot] ID plytki: "));
+  Serial.println(dataObject.id);
+#endif
 }
 
 // MAIN LOOP ==================================================================================
@@ -32,7 +38,19 @@ void loop()
 
   // Wyślij dane
   dataObject.batteryMv = readVccMv();
-  app_mqtt_publish_json(dataObject);
+
+  if (dataObject.batteryMv < BATTERY_MIN_MV)
+  {
+#if DEBUG_LOG
+    Serial.print(F("[Battery] Zbyt niskie napiecie ("));
+    Serial.print(dataObject.batteryMv);
+    Serial.println(F("mV), pomijam nadawanie"));
+#endif
+  }
+  else
+  {
+    transmitSensorData(dataObject);
+  }
 
   lowPowerSleepMs(SENSOR_TX_INTERVAL_MS);
 }

@@ -10,7 +10,7 @@ struct __attribute__((packed)) plantData {
 };
 static_assert(sizeof(plantData) == 8, "plantData layout must match Central's PlantData");
 
-void app_mqtt_publish_json(const struct plantData& data);
+void transmitSensorData(const struct plantData& data);
 void setupHardware();
 void setupRadio();
 

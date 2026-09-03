@@ -5,6 +5,7 @@
 #include "hal_radio.h"
 #include "app_wifi.h"
 #include "app_http.h"
+#include "config.h"
 
 bool transmissionError = false;
 
@@ -24,13 +25,44 @@ void setup()
 void loop()
 {
     PlantData receivedData;
+    static unsigned long lastRxMillis = millis();
 
     app_wifi_loop();
 
     if (hal_radio_read(receivedData))
     {
-        bool success = app_http_publish(receivedData);
-        transmissionError = !success;
+        lastRxMillis = millis(); // radio zylo niezaleznie od tresci pakietu
+
+        if (receivedData.id == 0)
+        {
+            Serial.println(F("[RX] odrzucono pakiet (id=0)"));
+        }
+        else
+        {
+#if DEBUG_LOG
+            Serial.print(F("[RX] t="));
+            Serial.print(millis());
+            Serial.print(F("ms id="));
+            Serial.print(receivedData.id);
+            Serial.print(F(" wilgotnosc="));
+            Serial.print(receivedData.moisture);
+            Serial.print(F(" bateria="));
+            Serial.print(receivedData.batteryMv);
+            Serial.println(F("mV"));
+#endif
+
+            bool success = app_http_publish(receivedData);
+            transmissionError = !success;
+        }
+    }
+
+    if (millis() - lastRxMillis >= RADIO_WATCHDOG_TIMEOUT_MS)
+    {
+        Serial.print(F("[Radio] Brak pakietow od "));
+        Serial.print(RADIO_WATCHDOG_TIMEOUT_MS / 1000);
+        Serial.println(F("s, reinicjalizacja..."));
+        hal_radio_init();
+        lastRxMillis = millis();
     }
 
     // Sygnalizacja błędów - jeśli nie ma wifi albo wysłanie paczki się nie udało, migaj diodą

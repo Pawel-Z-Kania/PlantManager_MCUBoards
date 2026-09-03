@@ -39,7 +39,7 @@ void setupRadio()
     radio.stopListening();
 };
 
-void app_mqtt_publish_json(const plantData& dataObject)
+void transmitSensorData(const plantData& dataObject)
 {
     // Wybudź radio ze stanu power-down (patrz powerDown() poniżej) przed nadawaniem
     radio.powerUp();
@@ -50,6 +50,19 @@ void app_mqtt_publish_json(const plantData& dataObject)
 
     // Zejdź do najniższego poboru prądu do następnej transmisji
     radio.powerDown();
+
+#if DEBUG_LOG
+    Serial.print(F("[TX] t="));
+    Serial.print(millis());
+    Serial.print(F("ms id="));
+    Serial.print(dataObject.id);
+    Serial.print(F(" wilgotnosc="));
+    Serial.print(dataObject.moisture);
+    Serial.print(F(" bateria="));
+    Serial.print(dataObject.batteryMv);
+    Serial.print(F("mV status="));
+    Serial.println(sukces ? F("OK") : F("BLAD"));
+#endif
 
     if (!sukces)
     {

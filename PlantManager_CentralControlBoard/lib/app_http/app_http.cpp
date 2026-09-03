@@ -33,8 +33,6 @@ bool app_http_publish(const PlantData &data)
     bool success = false;
     if (code > 0)
     {
-        Serial.print("[HTTP] Kod odpowiedzi: ");
-        Serial.println(code);
         if (code == 200) {
             success = true;
         } else {
@@ -45,6 +43,19 @@ bool app_http_publish(const PlantData &data)
     {
         Serial.println("[HTTP] Blad sieci: " + http.errorToString(code));
     }
+
+#if DEBUG_LOG
+    Serial.print(F("[HTTP] id="));
+    Serial.print(data.id);
+    Serial.print(F(" wilgotnosc="));
+    Serial.print(data.moisture);
+    Serial.print(F(" bateria="));
+    Serial.print(data.batteryMv);
+    Serial.print(F("mV kod="));
+    Serial.print(code);
+    Serial.print(F(" status="));
+    Serial.println(success ? F("OK") : F("BLAD"));
+#endif
 
     http.end();
     return success;

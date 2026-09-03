@@ -3,9 +3,25 @@
 #include <avr/sleep.h>
 #include <avr/wdt.h>
 #include <avr/interrupt.h>
+#include <avr/io.h>
 
 // Pusty handler - samo przerwanie WDT budzi CPU z sleep_cpu(), nic więcej nie trzeba robić
 ISR(WDT_vect) {}
+
+void logResetReason() {
+    // Odczytujemy zanim cokolwiek inne zdąży zmienić MCUSR
+    uint8_t reason = MCUSR;
+    MCUSR = 0;
+    wdt_disable();
+
+    Serial.print(F("[Boot] Powod resetu: "));
+    if (reason & (1 << PORF))  Serial.print(F("POWER-ON "));
+    if (reason & (1 << EXTRF)) Serial.print(F("EXTERNAL "));
+    if (reason & (1 << BORF))  Serial.print(F("BROWN-OUT "));
+    if (reason & (1 << WDRF))  Serial.print(F("WATCHDOG "));
+    if (reason == 0) Serial.print(F("NIEZNANY"));
+    Serial.println();
+}
 
 // Uzbraja WDT w trybie tylko-przerwanie (WDIE, bez WDE) i usypia CPU do czasu przerwania
 static void wdtSleepOnce(uint8_t wdtPrescalerBits) {
