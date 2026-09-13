@@ -26,6 +26,11 @@ void loop()
 {
     PlantData receivedData;
     static unsigned long lastRxMillis = millis();
+    // Ostatni PRZYJETY pakiet - do wykrywania retransmisji nRF24 po zgubionym ACK (ta sama tresc, krotko po sobie)
+    static uint32_t lastAcceptedId = 0;
+    static int16_t lastAcceptedMoisture = 0;
+    static uint16_t lastAcceptedBatteryMv = 0;
+    static unsigned long lastAcceptedMillis = 0;
 
     app_wifi_loop();
 
@@ -33,22 +38,34 @@ void loop()
     {
         lastRxMillis = millis(); // radio zylo niezaleznie od tresci pakietu
 
-        if (receivedData.id == 0)
+        if (receivedData.id < BOARD_ID_MIN || receivedData.id > BOARD_ID_MAX)
         {
-            Serial.println(F("[RX] odrzucono pakiet (id=0)"));
+            Serial.println(F("[ RX ] odrzucono pakiet (id poza zakresem)"));
+        }
+        else if (receivedData.id == lastAcceptedId &&
+                 receivedData.moisture == lastAcceptedMoisture &&
+                 receivedData.batteryMv == lastAcceptedBatteryMv &&
+                 millis() - lastAcceptedMillis < DUPLICATE_PACKET_WINDOW_MS)
+        {
+            Serial.println(F("[ RX ] odrzucono duplikat (retransmisja po zgubionym ACK)"));
         }
         else
         {
+            lastAcceptedId = receivedData.id;
+            lastAcceptedMoisture = receivedData.moisture;
+            lastAcceptedBatteryMv = receivedData.batteryMv;
+            lastAcceptedMillis = millis();
+
 #if DEBUG_LOG
-            Serial.print(F("[RX] t="));
-            Serial.print(millis());
-            Serial.print(F("ms id="));
+            Serial.print(F("[ RX ] id="));
             Serial.print(receivedData.id);
             Serial.print(F(" wilgotnosc="));
             Serial.print(receivedData.moisture);
             Serial.print(F(" bateria="));
             Serial.print(receivedData.batteryMv);
-            Serial.println(F("mV"));
+            Serial.print(F("mV t="));
+            Serial.print(millis());
+            Serial.println(F("ms"));
 #endif
 
             bool success = app_http_publish(receivedData);

@@ -103,6 +103,33 @@
         }
       },
       {
+        "label": "Detector - monitor [UNO] (COM4)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "device",
+          "monitor",
+          "-p",
+          "COM4",
+          "-b",
+          "9600",
+          "--filter",
+          "time",
+          "--filter",
+          "log2file"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "isBackground": true,
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
         "label": "Monitor ALL",
         "dependsOrder": "parallel",
         "dependsOn": [
@@ -423,6 +450,30 @@
         },
         "group": "build",
         "problemMatcher": []
+      },
+      {
+        "label": "Detector - upload + monitor [UNO] (COM4)",
+        "type": "process",
+        "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
+        "args": [
+          "run",
+          "-e",
+          "production_uno_com4",
+          "-t",
+          "upload",
+          "-t",
+          "monitor"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:PlantManager_DetectorBoard}"
+        },
+        "group": "build",
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": true
+        }
       }
     ]
   }

@@ -8,3 +8,8 @@
 #define SERIAL_BAUD_RATE        115200
 // Brak odebranego pakietu przez ten czas = radio uznane za zawieszone, wymuszamy reinicjalizacje
 #define RADIO_WATCHDOG_TIMEOUT_MS 90000UL
+// Ten sam pakiet (id+wartosci) odebrany ponownie w tym oknie = retransmisja po zgubionym ACK, nie nowy odczyt
+#define DUPLICATE_PACKET_WINDOW_MS 10000UL
+// Jedyny prawidlowy zakres ID plytki (patrz Detector's board_id.h) - poza nim pakiet jest odrzucany
+#define BOARD_ID_MIN 100000UL
+#define BOARD_ID_MAX 999999UL
