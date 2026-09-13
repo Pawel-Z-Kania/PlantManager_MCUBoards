@@ -13,5 +13,6 @@ static_assert(sizeof(plantData) == 8, "plantData layout must match Central's Pla
 void transmitSensorData(const struct plantData& data);
 void setupHardware();
 void setupRadio();
+unsigned long getSensorTxIntervalMs();
 
 #endif

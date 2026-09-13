@@ -40,6 +40,10 @@ static void wdtSleepOnce(uint8_t wdtPrescalerBits) {
 }
 
 void lowPowerSleepMs(uint32_t ms) {
+    // Bez tego ostatnie znaki poprzedniego Serial.print/println (bufor UART jest asynchroniczny)
+    // mogłyby zostać ucięte przez wyłączenie zegara peryferiów w SLEEP_MODE_PWR_DOWN
+    Serial.flush();
+
     // Dostępne kroki WDT (czas, bity prescalera WDP3..WDP0), od największego do najmniejszego
     static const struct { uint16_t ms; uint8_t prescalerBits; } steps[] = {
         {8000, (1 << WDP3) | (1 << WDP0)},

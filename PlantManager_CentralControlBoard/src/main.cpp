@@ -5,6 +5,7 @@
 #include "hal_radio.h"
 #include "app_wifi.h"
 #include "app_http.h"
+#include "app_remote_config.h"
 #include "config.h"
 
 bool transmissionError = false;
@@ -17,6 +18,7 @@ void setup()
     hal_radio_init();
     app_wifi_init();
     app_http_init();
+    app_remote_config_init();
 
     digitalWrite(LED_PIN, LOW); // Na NodeMCU stan LOW włacza obudowaną diodę
     Serial.println("System Monitoringu (ESP8266) Gotowy!");
@@ -33,6 +35,7 @@ void loop()
     static unsigned long lastAcceptedMillis = 0;
 
     app_wifi_loop();
+    app_remote_config_loop();
 
     if (hal_radio_read(receivedData))
     {
@@ -73,10 +76,11 @@ void loop()
         }
     }
 
-    if (millis() - lastRxMillis >= RADIO_WATCHDOG_TIMEOUT_MS)
+    const unsigned long radioWatchdogTimeoutMs = app_remote_config_get_radio_watchdog_timeout_ms();
+    if (millis() - lastRxMillis >= radioWatchdogTimeoutMs)
     {
-        Serial.print(F("[Radio] Brak pakietow od "));
-        Serial.print(RADIO_WATCHDOG_TIMEOUT_MS / 1000);
+        Serial.print(F("[Radio] Brak oczekiwanego raportu od "));
+        Serial.print(radioWatchdogTimeoutMs / 1000);
         Serial.println(F("s, reinicjalizacja..."));
         hal_radio_init();
         lastRxMillis = millis();

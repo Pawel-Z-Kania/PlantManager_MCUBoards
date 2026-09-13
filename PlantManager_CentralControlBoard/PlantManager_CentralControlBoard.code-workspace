@@ -22,7 +22,7 @@
     "version": "2.0.0",
     "tasks": [
       {
-        "label": "Central - monitor (COM6)",
+        "label": "Central - monitor",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [
@@ -49,7 +49,7 @@
         }
       },
       {
-        "label": "Detector - monitor (COM5)",
+        "label": "Detector [PRO COM5] - monitor",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [
@@ -76,7 +76,7 @@
         }
       },
       {
-        "label": "Detector - monitor [UNO] (COM3)",
+        "label": "Detector [UNO COM3] - monitor",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [
@@ -103,7 +103,7 @@
         }
       },
       {
-        "label": "Detector - monitor [UNO] (COM4)",
+        "label": "Detector [UNO COM4] - monitor",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [
@@ -133,13 +133,13 @@
         "label": "Monitor ALL",
         "dependsOrder": "parallel",
         "dependsOn": [
-          "Central - monitor (COM6)",
-          "Detector - monitor (COM5)",
-          "Detector - monitor [UNO] (COM3)"
+          "Central - monitor",
+          "Detector [PRO COM5] - monitor",
+          "Detector [UNO COM3] - monitor"
         ]
       },
       {
-        "label": "Central - upload + monitor (production)",
+        "label": "Central - upload + monitor",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [
@@ -265,7 +265,7 @@
       //   "problemMatcher": []
       // },
       {
-        "label": "Central - upload (production)",
+        "label": "Central - upload",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [
@@ -418,7 +418,7 @@
       //   "problemMatcher": []
       // },
       {
-        "label": "Detector - upload (production)",
+        "label": "Detector [PRO COM5] - upload",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [
@@ -435,7 +435,7 @@
         "problemMatcher": []
       },
       {
-        "label": "Detector - upload [UNO] (production_uno)",
+        "label": "Detector [UNO COM3] - upload",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [
@@ -452,7 +452,7 @@
         "problemMatcher": []
       },
       {
-        "label": "Detector - upload + monitor [UNO] (COM4)",
+        "label": "Detector [UNO COM4] - upload + monitor",
         "type": "process",
         "command": "C:/Users/euter/.platformio/penv/Scripts/platformio.exe",
         "args": [

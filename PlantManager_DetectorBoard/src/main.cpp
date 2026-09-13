@@ -20,6 +20,10 @@ void setup()
 #if DEBUG_LOG
   Serial.print(F("[Boot] ID plytki: "));
   Serial.println(dataObject.id);
+  // Ujawnia od razu, czy wczytany/domyslny interwal jest sensowny (diagnoza "nadawania w petli")
+  Serial.print(F("[Boot] Interwal wysylania: "));
+  Serial.print(getSensorTxIntervalMs() / 1000UL);
+  Serial.println(F("s"));
 #endif
 }
 
@@ -52,5 +56,5 @@ void loop()
     transmitSensorData(dataObject);
   }
 
-  lowPowerSleepMs(SENSOR_TX_INTERVAL_MS);
+  lowPowerSleepMs(getSensorTxIntervalMs());
 }

@@ -10,9 +10,10 @@ inline uint32_t getBoardId() {
   uint32_t storedId;
   EEPROM.get(EEPROM_ID_ADDR, storedId);
 
-  if (storedId == 0xFFFFFFFF || storedId == 0) {
+  // Pelny zakres zamiast tylko 0/0xFFFFFFFF - lapie tez czesciowo zapisany (torn write) EEPROM
+  if (storedId < BOARD_ID_MIN || storedId > BOARD_ID_MAX) {
     randomSeed(analogRead(A1) + analogRead(A2));
-    storedId = random(100000, 999999);
+    storedId = random(BOARD_ID_MIN, BOARD_ID_MAX + 1);
     EEPROM.put(EEPROM_ID_ADDR, storedId);
   }
 

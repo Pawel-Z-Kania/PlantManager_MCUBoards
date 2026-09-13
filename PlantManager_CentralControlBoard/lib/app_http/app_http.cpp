@@ -10,6 +10,8 @@ static WiFiClientSecure wifiClient;
 void app_http_init()
 {
     wifiClient.setInsecure();
+    // Domyslne bufory BearSSL (16KB RX + 16KB TX) nie miesza sie w wolnym heapie ESP8266 - zmniejszamy je
+    wifiClient.setBufferSizes(TLS_RX_BUFFER_SIZE, TLS_TX_BUFFER_SIZE);
     Serial.println("[HTTP] Zainicjowano.");
 }
 
@@ -24,6 +26,7 @@ bool app_http_publish(const PlantData &data)
     HTTPClient http;
     String url = String(VERCEL_URL) + HTTP_ENDPOINT_PATH;
     http.begin(wifiClient, url);
+    http.setTimeout(HTTP_TIMEOUT_MS);
     http.addHeader("Content-Type", "application/json");
     http.addHeader("x-api-key", HTTP_AUTH_TOKEN );
 
@@ -33,7 +36,7 @@ bool app_http_publish(const PlantData &data)
     bool success = false;
     if (code > 0)
     {
-        if (code == 200) {
+        if (code >= 200 && code < 300) {
             success = true;
         } else {
             Serial.println("[HTTP] Tresc odpowiedzi: " + http.getString());
@@ -42,6 +45,11 @@ bool app_http_publish(const PlantData &data)
     else
     {
         Serial.println("[HTTP] Blad sieci: " + http.errorToString(code));
+#if DEBUG_LOG
+        Serial.print(F("[HTTP] Wolny heap="));
+        Serial.print(ESP.getFreeHeap());
+        Serial.println(F("B"));
+#endif
     }
 
 #if DEBUG_LOG

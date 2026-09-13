@@ -10,3 +10,4 @@ static_assert(sizeof(PlantData) == 8, "PlantData layout must match Detector's pl
 
 void hal_radio_init();
 bool hal_radio_read(PlantData &data);
+void hal_radio_set_config(uint32_t configVersion, uint16_t intervalSeconds);
